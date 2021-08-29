@@ -43,13 +43,13 @@ void setup()   {
 
 void loop() {
 
-  //  angle_x = sudutX(40);
-  //  angle_y = sudutY(40);
-  //  angle_z = sudutZ(40);
+    angle_x = sudutX(40);
+    angle_y = sudutY(40);
+    angle_z = sudutZ(40);
 
-  angle_x = sudut(40, x);
-  angle_y = sudut(40, y);
-  angle_z = sudut(40, z);
+//  angle_x = sudut(40, x);
+//  angle_y = sudut(40, y);
+//  angle_z = sudut(40, z);
 
   Serial.print("Rotation ");
   Serial.print("x= ");
@@ -134,13 +134,13 @@ int sudut(int sample, int sumbu ) {
   switch (sumbu) {
     case x:    // your hand is on the sensor
       return 100;
-      break;
+     // break;
     case y:    // your hand is close to the sensor
       return 1000;
-      break;
+     // break;
     case z:    // your hand is a few inches from the sensor
       return 2000;
-      break;
+      //break;
 
   }
   //return 0
