@@ -4,9 +4,9 @@ SoftwareSerial HC12(3, 2); // HC-12 TX Pin, HC-12 RX Pin
 #define faseA 8
 #define faseB 9
 
-unsigned long waktu = 0,sudut = 0, sudutraw, counter = 0;
+unsigned long waktu = 0;
 int  stateA, stateAend;
-
+long panjang = 0, counter = 0, panjangLama = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -21,33 +21,14 @@ void loop() {
 
   bacaEncoder();
   // HC12.write(sudutraw);
-  if (millis() - waktu >= 500) {
+  if (millis() - waktu >= 500 && panjang != panjangLama) {
     Serial.print("sudut = ");
-    Serial.println(sudutraw);
+    Serial.println(panjang);
     waktu = millis();
-    HC12.write("Z");
-    HC12.print(sudutraw);
-    HC12.println("setB");
+    HC12.write("z");
+    HC12.print(panjang);
+    HC12.println("SetB");
+    panjangLama = panjang;
   }
 
-}
-
-
-void bacaEncoder()
-{
-  stateA = digitalRead(faseA); // baca status awal dari fase A
-  // kalo kondisi state fase A sekarang dan sebelumnya berbeda, berarti ada pulsa yang masuk guys
-  if (stateA != stateAend) {
-    // kalo state fase B berbeda dengan state fase A, berarti encoder berputar searah jarum jam
-    if (digitalRead(faseB) != stateA) {
-      counter ++;
-    } else {
-      counter --;
-    }
-    //Serial.println(counter);
-    sudutraw = counter;
-  }
-  stateAend = stateA; //update state dari fase
-  sudut = sudutraw / 5.57;
- 
 }
