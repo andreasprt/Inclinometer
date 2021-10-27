@@ -83,15 +83,13 @@ void setup() {
 
     packetSize = mpu.dmpGetFIFOPacketSize();
   } else {}
-
+digitalWrite(en, LOW);
+delay(10);
 }
 unsigned long waktu = 0;
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(en, HIGH);
-  //Serial1.println("ujicoba");
-  //delay(100);
+
   if (!dmpReady) return;
   if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) { // Get the Latest packet
     waktu = millis();
@@ -99,36 +97,28 @@ void loop() {
     mpu.dmpGetQuaternion(&q, fifoBuffer);
     mpu.dmpGetGravity(&gravity, &q);
     mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-    if (waktu - millis() > 1000) {
-      k.print("ypr#");
-      k.print(ypr[0] * 180 / M_PI);
-      k.print("#");
-      k.print(ypr[1] * 180 / M_PI);
-      k.print("#");
-      k.print(ypr[2] * 180 / M_PI);
-      k.print("#");
-      k.println();
-      k.flush();
-      waktu = millis();
+    //Serial.println(ypr[0] * 180 / M_PI);
+    while (k.available()) {
+      Serial.println(k.read());
+      if (k.read() == 'k') {
+       // kirim();
+      }
     }
 
-#endif
+    //    if (waktu - millis() > 1000) {
+    //      k.print("ypr#");
+    //      k.print(ypr[0] * 180 / M_PI);
+    //      k.print("#");
+    //      k.print(ypr[1] * 180 / M_PI);
+    //      k.print("#");
+    //      k.print(ypr[2] * 180 / M_PI);
+    //      k.print("#");
+    //      k.println();
+    //      k.flush();
+    //      waktu = millis();
+    //    }
 
-#ifdef OUTPUT_TEAPOT
-    teapotPacket[2] = fifoBuffer[0];
-    teapotPacket[3] = fifoBuffer[1];
-    teapotPacket[4] = fifoBuffer[4];
-    teapotPacket[5] = fifoBuffer[5];
-    teapotPacket[6] = fifoBuffer[8];
-    teapotPacket[7] = fifoBuffer[9];
-    teapotPacket[8] = fifoBuffer[12];
-    teapotPacket[9] = fifoBuffer[13];
-    Serial1.write(teapotPacket, 14);
-    teapotPacket[11]++; // packetCount, loops at 0xFF on purpose
 #endif
-
-    blinkState = !blinkState;
-    digitalWrite(LED_PIN, blinkState);
 
 
   }
@@ -137,4 +127,20 @@ void loop() {
 
 void dmpDataReady() {
   mpuInterrupt = true;
+}
+
+void kirim () {
+  digitalWrite(en, HIGH);
+  delay(5);
+  Serial.println("sad");
+  k.print("ypr#");
+  k.print(ypr[0] * 180 / M_PI);
+  k.print("#");
+  k.print(ypr[1] * 180 / M_PI);
+  k.print("#");
+  k.print(ypr[2] * 180 / M_PI);
+  k.print("#");
+  k.println();
+  k.flush();
+  digitalWrite(en, LOW);
 }

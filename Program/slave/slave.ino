@@ -1,5 +1,8 @@
 #define LED       2
-#define SLAVE_EN  21
+#define EN  21
+
+#define RXD2 16
+#define TXD2 17
 
 String dataIn;
 String dt[10];
@@ -13,28 +16,53 @@ boolean parsing = false;
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
+
 BluetoothSerial SerialBT;
 
 void setup() {
   pinMode(LED , OUTPUT);                        // Declare LED pin as output
-  pinMode(SLAVE_EN , OUTPUT);                   // Declare Enable pin as output
+  pinMode(EN , OUTPUT);                   // Declare Enable pin as output
   Serial.begin(9600);                           // set serial communication baudrate
-  digitalWrite(SLAVE_EN , LOW);                 // Make Enable pin low
+  digitalWrite(EN , LOW);                 // Make Enable pin low
   // Receiving mode ON
   dataIn = "";
-
+  Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
   SerialBT.println("Inclinometer Siap");
+
+  digitalWrite(EN , LOW); //receiver
+//  digitalWrite(EN , HIGH);   //tx
 }
-unsigned long waktu = 0;
+unsigned long waktu = millis();
 void loop() {
+  digitalWrite(EN , HIGH); 
+  delay(5);
   //  SerialBT.println("Inclinometer Siap bro");
-  digitalWrite(SLAVE_EN , LOW);
-  if (Serial.available() > 0)
+  if (millis() - waktu >= 1000) {
+    digitalWrite(EN , HIGH);
+    delay(10);
+    Serial.println('k');
+    Serial.flush();
+    //digitalWrite(EN , LOW);
+   // cekSerial1();
+    waktu = millis();
+  }
+
+
+
+}
+
+void cekSerial1() {
+  while (Serial.available() > 0  )
   {
-    char inChar = (char)Serial.read();
+    char inChar;
+    if (Serial.available() > 0)
+      inChar = (char)Serial.read();
+    //    else if ( Serial2.available() > 0)
+    //      inChar = (char)Serial2.read();
+
     dataIn += inChar;
     if (inChar == '\n') {
       parsing = true;
@@ -46,18 +74,27 @@ void loop() {
     parsing = false;
     dataIn = "";
   }
-  waktu = millis();
-  if (waktu - millis() > 500) {
-    SerialBT.print("yaw   = ");
-    SerialBT.print(dt[1].toFloat());
-    SerialBT.print("\n");
-    SerialBT.print("pitch = ");
-    SerialBT.print(dt[2].toFloat());
-    SerialBT.print("\n");
-    SerialBT.print("roll  = ");
-    SerialBT.print(dt[3].toFloat());
-    SerialBT.print("\n\n");
-    waktu=millis();
+}
+
+void cekSerial2() {
+  while (Serial2.available() > 0  )
+  {
+    char inChar;
+    if (Serial2.available() > 0)
+      inChar = (char)Serial2.read();
+    //    else if ( Serial2.available() > 0)
+    //      inChar = (char)Serial2.read();
+
+    dataIn += inChar;
+    if (inChar == '\n') {
+      parsing = true;
+    }
+  }
+  if (parsing)
+  {
+    parsingData();
+    parsing = false;
+    dataIn = "";
   }
 }
 void parsingData()
@@ -86,6 +123,19 @@ void parsingData()
       dt[j] = dt[j] + dataIn[i];
     }
   }
+  if (waktu - millis() > 500) {
+    SerialBT.print("X");
+    SerialBT.print(dt[1].toFloat());
+    // SerialBT.print("\n");
+    SerialBT.print("Y");
+    SerialBT.print(dt[2].toFloat());
+    //SerialBT.print("\n");
+    SerialBT.print("Z");
+    SerialBT.print(dt[3].toFloat());
+    SerialBT.print("Set");
+    SerialBT.print("\n");
+    waktu = millis();
+  }
   //kirim data hasil parsing
   //  Serial.print("data 1 : ");
   //  Serial.print(dt[0]);
@@ -107,14 +157,14 @@ void parsingData()
   //  SerialBT.print("data 1 : ");
   //  SerialBT.print(dt[0]);
   //  SerialBT.print("\n");
-  SerialBT.print("yaw   = ");
-  SerialBT.print(dt[1].toFloat());
-  SerialBT.print("\n");
-  SerialBT.print("pitch = ");
-  SerialBT.print(dt[2].toFloat());
-  SerialBT.print("\n");
-  SerialBT.print("roll  = ");
-  SerialBT.print(dt[3].toFloat());
-  SerialBT.print("\n\n");
+  //  SerialBT.print("yaw   = ");
+  //  SerialBT.print(dt[1].toFloat());
+  //  SerialBT.print("\n");
+  //  SerialBT.print("pitch = ");
+  //  SerialBT.print(dt[2].toFloat());
+  //  SerialBT.print("\n");
+  //  SerialBT.print("roll  = ");
+  //  SerialBT.print(dt[3].toFloat());
+  //  SerialBT.print("\n\n");
   //delay(1000);
 }
