@@ -1,0 +1,33 @@
+E:\Proyek\Desktop\INCgui\INCgui\bin\Debug\INCgui.exe.config
+E:\Proyek\Desktop\INCgui\INCgui\bin\Debug\INCgui.exe
+E:\Proyek\Desktop\INCgui\INCgui\bin\Debug\INCgui.pdb
+E:\Proyek\Desktop\INCgui\INCgui\bin\Debug\Guna.UI2.dll
+E:\Proyek\Desktop\INCgui\INCgui\bin\Debug\Magic.ModernUI.dll
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.csprojResolveAssemblyReference.cache
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.Form1.resources
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.Properties.Resources.resources
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.csproj.GenerateResource.Cache
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.exe
+E:\Proyek\Desktop\INCgui\INCgui\obj\Debug\INCgui.pdb
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\bin\Debug\INCgui.exe.config
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\bin\Debug\INCgui.exe
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\bin\Debug\INCgui.pdb
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.csprojAssemblyReference.cache
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.Form1.resources
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.Properties.Resources.resources
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.csproj.GenerateResource.cache
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.csproj.CoreCompileInputs.cache
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.csproj.CopyComplete
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.exe
+D:\Team Riset\inigui_inibapakgu_iniibugui\INCgui\INCgui\obj\Debug\INCgui.pdb
+E:\Inclinometer\INCgui\INCgui\bin\Debug\INCgui.exe.config
+E:\Inclinometer\INCgui\INCgui\bin\Debug\INCgui.exe
+E:\Inclinometer\INCgui\INCgui\bin\Debug\INCgui.pdb
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.csproj.AssemblyReference.cache
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.Form1.resources
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.Properties.Resources.resources
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.csproj.GenerateResource.cache
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.csproj.CoreCompileInputs.cache
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.csproj.CopyComplete
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.exe
+E:\Inclinometer\INCgui\INCgui\obj\Debug\INCgui.pdb
