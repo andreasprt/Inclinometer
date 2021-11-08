@@ -19,6 +19,7 @@ namespace INCgui
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         StringBuilder sb = new StringBuilder();
@@ -32,6 +33,8 @@ namespace INCgui
         public delegate void transfer();
         char linefeed = (char)10;
         byte[] terima;
+        double disX = 0, disY = 0, disX_lama = 0, disY_lama = 0;
+        double phi = Math.PI;
 
         Double z1, z2, x, y;
 
@@ -103,8 +106,16 @@ namespace INCgui
             //tbox_c2ymax.Text = " ";
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
+
+           // chart2.Series[0].Points.Clear();
+           // chart2.Series[1].Points.Clear();
+
+            //chart3.Series[0].Points.Clear();
+            //chart3.Series[1].Points.Clear();
+
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            disX_lama = disX = disY_lama = disY =0;
         }
 
         private void buttonsetx_c1_Click(object sender, EventArgs e)
@@ -132,6 +143,35 @@ namespace INCgui
             {
                 MessageBox.Show(error.Message);
             }
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+            if (textBox4.Text != "")
+            {
+                int a = Convert.ToInt32(textBox4.Text);
+
+                double angle = (a * (Math.PI)) / 180;
+
+                textBox2.Text = (Math.Cos(angle)).ToString();
+                textBox3.Text = (Math.Sin(angle)).ToString();
+            }
+        }
+
+        private void chart2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chart2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chart2_Click_2(object sender, EventArgs e)
+        {
+
         }
 
         private void buttonsety_c1_Click(object sender, EventArgs e)
@@ -302,6 +342,9 @@ namespace INCgui
             {
                 if (c == linefeed)
                 {
+                    
+
+
                     sb.Append(c);
 
                     dtraw = sb.ToString();
@@ -311,15 +354,82 @@ namespace INCgui
                     {
                         string[] dtbuff = dtraw.Split('#', '\n');
 
-                        dtx = dtbuff[0];
-                        dty = dtbuff[1];
-                        dtz = dtbuff[2];
-                        dtr = dtbuff[3];
+                        dtx = dtbuff[0]; // x
+                        dty = dtbuff[1]; // 
+                        dtz = dtbuff[2]; // y
+                        dtr = dtbuff[3]; // encoder
+                       // int kedalaman = Convert.ToInt32(dtbuff[3]);
 
-                        textBox1.Text = dtbuff[3];
 
-                        zx2 = zx1 - (Double.Parse(dtbuff[3]) * Math.Sin((Double.Parse(dtbuff[0]) + 90) * 3.14 / 180));
+                        int probe = 1; // panjang probe 1 cm
+                       // double angleX = (Convert.ToInt32(dtbuff[1]) * (Math.PI)) / 180;
+                        //double angleY = (Convert.ToInt32(dtbuff[2]) * (Math.PI)) / 180;
+
+                        disX = disX_lama + (probe * Math.Sin((Convert.ToInt32(dtbuff[1]) * phi) / 180));
+                        disX_lama = disX;
+
+                        disY = disY_lama + (probe * Math.Sin((Convert.ToInt32(dtbuff[2]) * phi) / 180));
+                        disY_lama = disY;
+
+
+                        double kedalaman = Double.Parse(dtbuff[3]);
+
+                        textBox4.Text = kedalaman.ToString();
+                        textBox2.Text = disX_lama.ToString();
+                        textBox3.Text = disY_lama.ToString();
+
+                        if (disX_lama == 0 || disY_lama == 0)
+                        {
+                            chart1.Series["X"].Points.AddXY(0.000000001, kedalaman);
+                            chart1.Series["Y"].Points.AddXY(0.000000001, kedalaman);
+                        }
+                        else
+                        {
+                            chart1.Series["X"].Points.AddXY(disX_lama, kedalaman);
+                            chart1.Series["Y"].Points.AddXY(disY_lama, kedalaman);
+                        }
+                        
+
+                        /*
+                       zx2 = zx1 - (Double.Parse(dtbuff[3]) * Math.Sin((Double.Parse(dtbuff[0]) + 90) * 3.14 / 180));
+                       x2 = x1 - (Double.Parse(dtbuff[3]) * Math.Cos((Double.Parse(dtbuff[0]) + 90) * 3.14 / 180));
+
+                       zx1 = zx2;
+                       x1 = x2;
+
+                       zy2 = zy1 - (Double.Parse(dtbuff[3]) * Math.Sin((Double.Parse(dtbuff[2]) + 90) * 3.14 / 180));
+                       y2 = y1 - (Double.Parse(dtbuff[3]) * Math.Cos((Double.Parse(dtbuff[2]) + 90) * 3.14 / 180));
+                       zy1 = zy2;
+                       y1 = y2;
+
+                        chart1.Series["X"].Points.AddXY(zx2, x2);
+                       chart1.Series["Y"].Points.AddXY(zx2, y2);
+                        */
+
+
+
+                        if (TextWasChanged)
+                       {
+                            int no = 0;
+                            DataGridViewRow newRow = new DataGridViewRow();
+                            newRow.CreateCells(dataGridView1);
+                            newRow.Cells[0].Value = "X " + disX;
+                            newRow.Cells[1].Value = "ZX " + disX_lama;//1
+                            newRow.Cells[2].Value = "Y " + disY;
+                            newRow.Cells[3].Value = "ZY " + disY_lama;//2
+                            newRow.Cells[4].Value = "DX " + dtbuff[1];
+                            newRow.Cells[5].Value = "DY " + dtbuff[2];
+                            newRow.Cells[6].Value = "DZ " + dtbuff[3];
+                            newRow.Cells[7].Value = "Time " + (DateTime.Now.ToLongDateString() + ", Pukul " + DateTime.Now.ToString("HH:mm:ss:ff"));
+                            dataGridView1.Rows.Add(newRow);
+
+                        }
+
+
+
+                        /*zx2 = zx1 - (Double.Parse(dtbuff[3]) * Math.Sin((Double.Parse(dtbuff[0]) + 90) * 3.14 / 180));
                         x2 = x1 - (Double.Parse(dtbuff[3]) * Math.Cos((Double.Parse(dtbuff[0]) + 90) * 3.14 / 180));
+
                         zx1 = zx2;
                         x1 = x2;
 
@@ -345,7 +455,8 @@ namespace INCgui
                             newRow.Cells[6].Value = "DZ " + dtbuff[3];
                             newRow.Cells[7].Value = "Time " + (DateTime.Now.ToLongDateString() + ", Pukul " + DateTime.Now.ToString("HH:mm:ss:ff"));
                             dataGridView1.Rows.Add(newRow);
-                        }
+                        }*/
+
                     }
                     catch { }
 
